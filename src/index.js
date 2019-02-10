@@ -18,6 +18,12 @@ const buildTemplate = answer => {
     const answerText = answer ? 'yes' : 'no'
 
     return `
+<!--
+Made with love (and in good fun) by @icbat.
+Source code at https://github.com/icbat/hasreaperbeennerfed.com
+PRs welcome!
+-->
+
 <html>
     <head>
         <style type="text/css">
