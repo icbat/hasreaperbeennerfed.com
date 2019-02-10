@@ -2,7 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-const template = `
+
+const buildTemplate = answer => {
+    const answerText = answer ? 'yes' : 'no'
+
+    return `
 <html>
     <head>
         <style type="text/css">
@@ -20,6 +24,7 @@ const template = `
                 margin: 0;
                 width: 100%;
                 font-family: arial;
+                text-transform: uppercase;
             }
             a {
                 color: black;
@@ -29,12 +34,15 @@ const template = `
     </head>
     <body>
         <div>
-            <h1><a href="https://playoverwatch.com/en-us/news/patch-notes/pc/">NO</a></h1>
+            <h1><a href="https://playoverwatch.com/en-us/news/patch-notes/pc/">${answerText}</a></h1>
         </div>
     </body>
 </html>
 `
+}
 
-app.get('/', (req, res) => res.send(template))
+app.get('/', (_req, res) => {
+    return res.send(buildTemplate(false))
+})
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Listening on port ${port}!`))
