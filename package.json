@@ -1,0 +1,14 @@
+{
+  "name": "hasreaperbeennerfed.com",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/icbat/hasreaperbeennerfed.com.git",
+  "author": "Evan Cobb <icbat@pm.me>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
