@@ -5,6 +5,14 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const MILLIS = 1000
+const SECONDS = 60
+const MINUTES = 60
+const cache = {
+    lastUpdate: null,
+    lastResponse: null,
+    expiration: 1 * MINUTES * SECONDS * MILLIS,
+}
 
 const buildTemplate = answer => {
     const answerText = answer ? 'yes' : 'no'
@@ -56,7 +64,7 @@ const getAnswer = async () => {
         return false
     }
 
-    // This assumes that the next patch will 'fix' Reaper
+    // This assumes that the next patch Reaper is mentioned in will fix him
     return findReapy(latestPatch)
 }
 
@@ -73,7 +81,19 @@ const findReapy = node => {
 }
 
 app.get('/', async (_req, res) => {
-    const answer = await getAnswer()
+    let answer
+    let difference
+    if (cache.lastUpdate) {
+        difference = new Date().getTime() - cache.lastUpdate.getTime()
+    }
+    if (!cache.lastUpdate || difference > cache.expiration) {
+        answer = await getAnswer()
+        cache.lastResponse = answer
+        cache.lastUpdate = new Date()
+    } else {
+        answer = cache.lastResponse
+    }
+
     return res.send(buildTemplate(answer))
 })
 
