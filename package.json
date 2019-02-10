@@ -5,6 +5,10 @@
   "repository": "https://github.com/icbat/hasreaperbeennerfed.com.git",
   "author": "Evan Cobb <icbat@pm.me>",
   "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
   "dependencies": {
     "express": "^4.16.4",
     "html-soup": "^2.0.0",
