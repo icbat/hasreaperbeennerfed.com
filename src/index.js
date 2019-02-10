@@ -52,7 +52,24 @@ const getAnswer = async () => {
     const latestPatch = patches[0]
 
     const theReaperBuffPatch = 'patch-54255'
-    return latestPatch.attributes.id !== theReaperBuffPatch
+    if (theReaperBuffPatch === latestPatch.attributes.id) {
+        return false
+    }
+
+    // This assumes that the next patch will 'fix' Reaper
+    return findReapy(latestPatch)
+}
+
+const findReapy = node => {
+    const callouts = Array.from(htmlSoup.select(node, '.IcoHeading-text'))
+
+    const heroesChanged = callouts
+        .map(callout => callout.children)
+        .map(children => children[0])
+        .map(child => child.text  || '')
+        .map(name => name.toUpperCase())
+
+    return heroesChanged.includes('REAPER')
 }
 
 app.get('/', async (_req, res) => {
