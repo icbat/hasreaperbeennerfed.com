@@ -1,3 +1,6 @@
+const request = require('request-promise-native')
+const htmlSoup = require('html-soup')
+
 const express = require('express')
 const app = express()
 const port = 3000
@@ -41,8 +44,20 @@ const buildTemplate = answer => {
 `
 }
 
-app.get('/', (_req, res) => {
-    return res.send(buildTemplate(false))
+const getAnswer = async () => {
+    const response = await request({uri: 'https://playoverwatch.com/en-us/news/patch-notes/pc/'})
+    const dom = htmlSoup.parse(response)
+    const patches = Array.from(htmlSoup.select(dom, 'div.patch-notes-patch'))
+
+    const latestPatch = patches[0]
+
+    const theReaperBuffPatch = 'patch-54255'
+    return latestPatch.attributes.id !== theReaperBuffPatch
+}
+
+app.get('/', async (_req, res) => {
+    const answer = await getAnswer()
+    return res.send(buildTemplate(answer))
 })
 
 app.listen(port, () => console.log(`Listening on port ${port}!`))
